@@ -20,6 +20,12 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.apache.nifi:nifi-framework-core:1.16.0'
+	implementation 'org.apache.nifi:nifi-client-dto:1.16.0'
+	implementation 'org.apache.nifi.registry:nifi-registry-client:1.16.0'
+	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'org.glassfish.jersey.media:jersey-media-multipart:2.27'
+	implementation 'org.glassfish.jersey.media:jersey-media-jaxb:2.27'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

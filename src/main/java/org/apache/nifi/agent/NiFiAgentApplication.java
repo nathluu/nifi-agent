@@ -1,13 +1,13 @@
-package org.apache.nifi.nifiagent;
+package org.apache.nifi.agent;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NifiAgentApplication {
+public class NiFiAgentApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NifiAgentApplication.class, args);
+		SpringApplication.run(NiFiAgentApplication.class, args);
 	}
 
 }
