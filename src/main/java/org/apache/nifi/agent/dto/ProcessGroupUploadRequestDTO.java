@@ -9,7 +9,9 @@ import java.util.List;
 @Getter
 public class ProcessGroupUploadRequestDTO {
     private String processGroupName;
-    private String parentGroupId;
+    private Double positionX;
+    private Double positionY;
+    private String clientId;
     private String flowContent;
     private List<ParameterDTO> parameters;
 }

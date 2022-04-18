@@ -24,8 +24,9 @@ public class ProcessGroupController {
         return client.getProcessGroupClient().getProcessGroup(id);
     }
 
-//    @PostMapping("/process-groups/{id}/process-groups")
-//    ProcessGroupEntity uploadProcessGroup(@RequestBody ProcessGroupUploadRequestDTO pgr, @PathVariable("id") String parentGroupId) {
-//
-//    }
+    @PostMapping("/process-groups/{id}/process-groups")
+    ProcessGroupEntity uploadProcessGroup(@PathVariable("id") String parentGroupId, @RequestBody ProcessGroupUploadRequestDTO req)
+            throws NiFiClientException, IOException {
+        return client.getProcessGroupClient().uploadProcessGroup(parentGroupId, req);
+    }
 }
