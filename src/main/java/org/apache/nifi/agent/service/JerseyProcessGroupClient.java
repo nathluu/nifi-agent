@@ -6,6 +6,7 @@ import org.apache.nifi.agent.config.RequestConfig;
 import org.apache.nifi.agent.dto.ProcessGroupUploadRequestDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
 import org.apache.nifi.web.api.entity.ProcessGroupEntity;
+import org.apache.nifi.web.api.entity.ProcessGroupsEntity;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
@@ -17,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
+import java.util.Set;
 
 public class JerseyProcessGroupClient extends AbstractJerseyClient implements ProcessGroupClient {
     private final WebTarget processGroupsTarget;
@@ -71,6 +74,21 @@ public class JerseyProcessGroupClient extends AbstractJerseyClient implements Pr
                     .resolveTemplate("id", processGroupId);
 
             return getRequestBuilder(target).get(ProcessGroupEntity.class);
+        });
+    }
+
+    @Override
+    public ProcessGroupsEntity getChildrenProcessGroup(String processGroupId) throws NiFiClientException, IOException {
+        if (StringUtils.isBlank(processGroupId)) {
+            throw new IllegalArgumentException("Process group id cannot be null or blank");
+        }
+
+        return executeAction("Error getting children process group", () -> {
+            final WebTarget target = processGroupsTarget
+                    .path("{id}/process-groups")
+                    .resolveTemplate("id", processGroupId);
+
+            return getRequestBuilder(target).get(ProcessGroupsEntity.class);
         });
     }
 
