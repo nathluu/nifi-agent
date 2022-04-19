@@ -76,11 +76,27 @@ public class JerseyNiFiClient implements NiFiClient {
     }
 
     @Override
+    public FlowClient getFlowClient() {
+        if (nifiClientConfig.getProxiedEntity() != null) {
+            return new JerseyFlowClient(baseTarget, new ProxiedEntityRequestConfig(nifiClientConfig.getProxiedEntity()));
+        }
+        return new JerseyFlowClient(baseTarget);
+    }
+
+    @Override
     public ProcessGroupClient getProcessGroupClient() {
         if (nifiClientConfig.getProxiedEntity() != null) {
             return new JerseyProcessGroupClient(baseTarget, new ProxiedEntityRequestConfig(nifiClientConfig.getProxiedEntity()));
         }
         return new JerseyProcessGroupClient(baseTarget);
+    }
+
+    @Override
+    public ControllerServicesClient getControllerServicesClient() {
+        if (nifiClientConfig.getProxiedEntity() != null) {
+            return new JerseyControllerServicesClient(baseTarget, new ProxiedEntityRequestConfig(nifiClientConfig.getProxiedEntity()));
+        }
+        return new JerseyControllerServicesClient(baseTarget);
     }
 
     @Override
