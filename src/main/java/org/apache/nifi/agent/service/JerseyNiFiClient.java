@@ -100,6 +100,14 @@ public class JerseyNiFiClient implements NiFiClient {
     }
 
     @Override
+    public ParamContextClient getParamContextClient() {
+        if (nifiClientConfig.getProxiedEntity() != null) {
+            return new JerseyParamContextClient(baseTarget, new ProxiedEntityRequestConfig(nifiClientConfig.getProxiedEntity()));
+        }
+        return new JerseyParamContextClient(baseTarget);
+    }
+
+    @Override
     public void close() {
         if (this.client != null) {
             try {

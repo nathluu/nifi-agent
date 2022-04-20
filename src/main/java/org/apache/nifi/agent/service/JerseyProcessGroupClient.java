@@ -3,7 +3,7 @@ package org.apache.nifi.agent.service;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.agent.config.RequestConfig;
-import org.apache.nifi.agent.dto.ProcessGroupUploadRequestDTO;
+import org.apache.nifi.agent.dto.PGUploadRequestDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
 import org.apache.nifi.web.api.entity.ProcessGroupEntity;
 import org.apache.nifi.web.api.entity.ProcessGroupsEntity;
@@ -13,13 +13,10 @@ import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
-import java.util.Set;
 
 public class JerseyProcessGroupClient extends AbstractJerseyClient implements ProcessGroupClient {
     private final WebTarget processGroupsTarget;
@@ -39,7 +36,7 @@ public class JerseyProcessGroupClient extends AbstractJerseyClient implements Pr
     }
 
     @Override
-    public ProcessGroupEntity uploadProcessGroup(String parentGroupId, ProcessGroupUploadRequestDTO req)
+    public ProcessGroupEntity uploadProcessGroup(String parentGroupId, PGUploadRequestDTO req)
             throws NiFiClientException, IOException {
         String decodedFlowContent = new String(Base64.getDecoder().decode(req.getFlowContent()));
         File file = File.createTempFile("flow", ".json");

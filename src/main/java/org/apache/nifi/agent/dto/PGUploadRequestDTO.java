@@ -7,11 +7,11 @@ import java.util.List;
 
 @Setter
 @Getter
-public class ProcessGroupUploadRequestDTO {
+public class PGUploadRequestDTO {
     private String processGroupName;
     private Double positionX;
     private Double positionY;
     private String clientId;
     private String flowContent;
-    private List<ParameterDTO> parameters;
+    private List<NiFiAgentParameterDTO> parameters;
 }

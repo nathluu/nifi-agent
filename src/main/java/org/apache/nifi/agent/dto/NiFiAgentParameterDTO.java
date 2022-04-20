@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ParameterDTO {
+public class NiFiAgentParameterDTO {
     private String name;
     private String value;
 }
