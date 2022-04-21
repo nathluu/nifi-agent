@@ -1,24 +1,18 @@
 package org.apache.nifi.agent.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.nifi.agent.dto.NiFiAgentParameterDTO;
 import org.apache.nifi.agent.dto.NiFiAgentProcessGroupDTO;
 import org.apache.nifi.agent.dto.NiFiAgentProcessGroupsDTO;
 import org.apache.nifi.agent.dto.PGUploadRequestDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
 import org.apache.nifi.agent.service.NiFiClient;
-import org.apache.nifi.agent.service.ParamContextClient;
 import org.apache.nifi.agent.util.Converter;
 import org.apache.nifi.agent.util.ProcessGroupHandler;
-import org.apache.nifi.web.api.dto.ParameterContextDTO;
-import org.apache.nifi.web.api.dto.ParameterDTO;
 import org.apache.nifi.web.api.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.*;
 
 @Slf4j
 @RestController
@@ -34,6 +28,12 @@ public class ProcessGroupController {
     @GetMapping("/process-groups/{id}")
     NiFiAgentProcessGroupDTO getProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
         return Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(id));
+    }
+
+    @DeleteMapping("/process-groups/{id}")
+    NiFiAgentProcessGroupDTO deleteProcessGroup(@PathVariable("id") String id,
+                                                @RequestParam int version) throws NiFiClientException, IOException {
+        return Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().deleteProcessGroup(id, version));
     }
 
     @GetMapping("/process-groups/{id}/process-groups")

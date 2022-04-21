@@ -18,4 +18,5 @@ public interface ProcessGroupClient {
     ProcessGroupsEntity getChildrenProcessGroup(String processGroupId) throws NiFiClientException, IOException;
 
     ProcessGroupEntity updateProcessGroup(ProcessGroupEntity entity) throws NiFiClientException, IOException;
+    ProcessGroupEntity deleteProcessGroup(String processGroupId, int version) throws NiFiClientException, IOException;
 }
