@@ -1,11 +1,11 @@
 nifi:
   client:
     baseUrl: https://nifi.tmanet.com:9443
-    keystoreFilename: /home/lhtan/workspace/nifi/nifi-conf/keystore.jks
+    keystoreFilename: C:\Users\lhtan\Workspace\nifi-conf\keystore.jks
     keystorePass: JaTxUVN+HK8+LyPCs9ruJXCiYq/zr1bYUxJBjEGnjpw
     keyPass: JaTxUVN+HK8+LyPCs9ruJXCiYq/zr1bYUxJBjEGnjpw
     keystoreType: JKS
-    truststoreFilename: /home/lhtan/workspace/nifi/nifi-conf/truststore.jks
+    truststoreFilename: C:\Users\lhtan\Workspace\nifi-conf\truststore.jks
     truststorePass: TErbdTQutLvFVd3kunMcCL5/OG1K+t2l/Q1vSiJbJp8
     truststoreType: JKS
     proxiedEntity: lhtan@tanluu298outlook.onmicrosoft.com
