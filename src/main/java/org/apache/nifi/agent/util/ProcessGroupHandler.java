@@ -49,7 +49,7 @@ public class ProcessGroupHandler {
                     throw new IllegalArgumentException("A parameter value is required when creating a new parameter");
                 }
 
-                if (existingParam.isPresent() && existingParam.get().getValue().equals(paramValue)) {
+                if (existingParam.isPresent() && existingParam.get().getValue() != null && existingParam.get().getValue().equals(paramValue)) {
     //                throw new IllegalArgumentException(String.format("Parameter value supplied for parameter [%s] is the same as its current value", paramName));
                     continue;
                 }
