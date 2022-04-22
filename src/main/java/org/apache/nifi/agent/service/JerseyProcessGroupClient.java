@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.agent.config.RequestConfig;
 import org.apache.nifi.agent.dto.PGUploadRequestDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
+import org.apache.nifi.registry.flow.VersionedFlowSnapshot;
 import org.apache.nifi.web.api.entity.ProcessGroupEntity;
 import org.apache.nifi.web.api.entity.ProcessGroupsEntity;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -107,6 +108,21 @@ public class JerseyProcessGroupClient extends AbstractJerseyClient implements Pr
                     .resolveTemplate("id", processGroupId);
 
             return getRequestBuilder(target).delete(ProcessGroupEntity.class);
+        });
+    }
+
+    @Override
+    public VersionedFlowSnapshot downloadVersionedFlowSnapshot(String processGroupId) throws NiFiClientException, IOException {
+        if (StringUtils.isBlank(processGroupId)) {
+            throw new IllegalArgumentException("Process group id cannot be null or blank");
+        }
+
+        return executeAction("Error download process group", () -> {
+            final WebTarget target = processGroupsTarget
+                    .path("{id}/download")
+                    .resolveTemplate("id", processGroupId);
+
+            return getRequestBuilder(target).get(VersionedFlowSnapshot.class);
         });
     }
 }

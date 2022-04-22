@@ -8,8 +8,10 @@ import org.apache.nifi.agent.exception.NiFiClientException;
 import org.apache.nifi.agent.service.NiFiClient;
 import org.apache.nifi.agent.util.Converter;
 import org.apache.nifi.agent.util.ProcessGroupHandler;
+import org.apache.nifi.registry.flow.VersionedFlowSnapshot;
 import org.apache.nifi.web.api.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -26,26 +28,31 @@ public class ProcessGroupController {
     }
 
     @GetMapping("/process-groups/{id}")
-    NiFiAgentProcessGroupDTO getProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
-        return Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(id));
+    ResponseEntity<NiFiAgentProcessGroupDTO> getProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
+        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(id)));
     }
 
     @DeleteMapping("/process-groups/{id}")
-    NiFiAgentProcessGroupDTO deleteProcessGroup(@PathVariable("id") String id,
+    ResponseEntity<NiFiAgentProcessGroupDTO> deleteProcessGroup(@PathVariable("id") String id,
                                                 @RequestParam int version) throws NiFiClientException, IOException {
-        return Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().deleteProcessGroup(id, version));
+        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().deleteProcessGroup(id, version)));
     }
 
     @GetMapping("/process-groups/{id}/process-groups")
-    NiFiAgentProcessGroupsDTO getAllChildrenProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
-        return Converter.convertProcessGroupsEntityToDto(client.getProcessGroupClient().getChildrenProcessGroup(id));
+    ResponseEntity<NiFiAgentProcessGroupsDTO> getAllChildrenProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
+        return ResponseEntity.ok(Converter.convertProcessGroupsEntityToDto(client.getProcessGroupClient().getChildrenProcessGroup(id)));
     }
 
     @PostMapping("/process-groups/{id}/process-groups/upload")
-    NiFiAgentProcessGroupDTO uploadProcessGroup(@PathVariable("id") String parentGroupId, @RequestBody PGUploadRequestDTO req)
+    ResponseEntity<NiFiAgentProcessGroupDTO> uploadProcessGroup(@PathVariable("id") String parentGroupId, @RequestBody PGUploadRequestDTO req)
             throws NiFiClientException, IOException, InterruptedException {
         final ProcessGroupEntity result = client.getProcessGroupClient().uploadProcessGroup(parentGroupId, req);
         ProcessGroupHandler.updateProcessGroupParameterContext(client, result, req.getParameters());
-        return Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(result.getId()));
+        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(result.getId())));
+    }
+
+    @GetMapping("/process-groups/{id}/download")
+    ResponseEntity<VersionedFlowSnapshot> downloadProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
+        return ResponseEntity.ok(client.getProcessGroupClient().downloadVersionedFlowSnapshot(id));
     }
 }
