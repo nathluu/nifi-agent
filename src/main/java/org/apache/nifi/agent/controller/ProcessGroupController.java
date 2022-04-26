@@ -28,26 +28,25 @@ public class ProcessGroupController {
     }
 
     @GetMapping("/process-groups/{id}")
-    ResponseEntity<NiFiAgentProcessGroupDTO> getProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
-        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(id)));
+    ResponseEntity<ProcessGroupEntity> getProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
+        return ResponseEntity.ok(client.getProcessGroupClient().getProcessGroup(id));
     }
 
     @DeleteMapping("/process-groups/{id}")
-    ResponseEntity<NiFiAgentProcessGroupDTO> deleteProcessGroup(@PathVariable("id") String id,
+    ResponseEntity<ProcessGroupEntity> deleteProcessGroup(@PathVariable("id") String id,
                                                 @RequestParam int version) throws NiFiClientException, IOException {
-        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().deleteProcessGroup(id, version)));
+        return ResponseEntity.ok(client.getProcessGroupClient().deleteProcessGroup(id, version));
     }
 
     @GetMapping("/process-groups/{id}/process-groups")
-    ResponseEntity<NiFiAgentProcessGroupsDTO> getAllChildrenProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
-        return ResponseEntity.ok(Converter.convertProcessGroupsEntityToDto(client.getProcessGroupClient().getChildrenProcessGroup(id)));
+    ResponseEntity<ProcessGroupsEntity> getAllChildrenProcessGroup(@PathVariable("id") String id) throws NiFiClientException, IOException {
+        return ResponseEntity.ok(client.getProcessGroupClient().getChildrenProcessGroup(id));
     }
 
     @PostMapping("/process-groups/{id}/process-groups/upload")
-    ResponseEntity<NiFiAgentProcessGroupDTO> uploadProcessGroup(@PathVariable("id") String parentGroupId, @RequestBody PGUploadRequestDTO req)
+    ResponseEntity<ProcessGroupEntity> uploadProcessGroup(@PathVariable("id") String parentGroupId, @RequestBody PGUploadRequestDTO req)
             throws NiFiClientException, IOException, InterruptedException {
-        final ProcessGroupEntity result = client.getProcessGroupClient().uploadProcessGroup(parentGroupId, req);
-        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(result));
+        return ResponseEntity.ok(client.getProcessGroupClient().uploadProcessGroup(parentGroupId, req));
     }
 
     @GetMapping("/process-groups/{id}/download")
