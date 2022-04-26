@@ -15,6 +15,7 @@ public class Converter {
         pgDto.setName(entity.getComponent().getName());
         pgDto.setRevision(entity.getRevision());
         pgDto.setPosition(entity.getPosition());
+        pgDto.setParameterContext(entity.getParameterContext());
         return pgDto;
     }
 

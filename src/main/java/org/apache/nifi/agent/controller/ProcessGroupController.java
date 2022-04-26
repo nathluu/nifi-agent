@@ -47,8 +47,7 @@ public class ProcessGroupController {
     ResponseEntity<NiFiAgentProcessGroupDTO> uploadProcessGroup(@PathVariable("id") String parentGroupId, @RequestBody PGUploadRequestDTO req)
             throws NiFiClientException, IOException, InterruptedException {
         final ProcessGroupEntity result = client.getProcessGroupClient().uploadProcessGroup(parentGroupId, req);
-        ProcessGroupHandler.updateProcessGroupParameterContext(client, result, req.getParameters());
-        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(client.getProcessGroupClient().getProcessGroup(result.getId())));
+        return ResponseEntity.ok(Converter.convertProcessGroupEntityToDto(result));
     }
 
     @GetMapping("/process-groups/{id}/download")

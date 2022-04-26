@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.nifi.web.api.dto.PositionDTO;
 import org.apache.nifi.web.api.dto.RevisionDTO;
+import org.apache.nifi.web.api.entity.ParameterContextReferenceEntity;
 
 @Getter
 @Setter
@@ -12,4 +13,5 @@ public class NiFiAgentProcessGroupDTO {
     private String name;
     private PositionDTO position;
     private RevisionDTO revision;
+    private ParameterContextReferenceEntity parameterContext;
 }
