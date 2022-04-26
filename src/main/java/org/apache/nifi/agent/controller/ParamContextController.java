@@ -1,7 +1,6 @@
 package org.apache.nifi.agent.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.nifi.agent.dto.NiFiAgentProcessGroupDTO;
 import org.apache.nifi.agent.dto.NiFiAgentUpdateParamContextReqDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
 import org.apache.nifi.agent.service.NiFiClient;

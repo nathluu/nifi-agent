@@ -1,13 +1,9 @@
 package org.apache.nifi.agent.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.nifi.agent.dto.NiFiAgentProcessGroupDTO;
-import org.apache.nifi.agent.dto.NiFiAgentProcessGroupsDTO;
 import org.apache.nifi.agent.dto.PGUploadRequestDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
 import org.apache.nifi.agent.service.NiFiClient;
-import org.apache.nifi.agent.util.Converter;
-import org.apache.nifi.agent.util.ProcessGroupHandler;
 import org.apache.nifi.registry.flow.VersionedFlowSnapshot;
 import org.apache.nifi.web.api.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
