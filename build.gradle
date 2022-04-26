@@ -27,6 +27,7 @@ dependencies {
 	implementation 'org.glassfish.jersey.media:jersey-media-multipart:2.27'
 	implementation 'org.glassfish.jersey.media:jersey-media-jaxb:2.27'
 	implementation 'org.modelmapper:modelmapper:3.1.0'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
