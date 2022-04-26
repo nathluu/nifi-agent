@@ -3,8 +3,9 @@ package org.apache.nifi.agent.service;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.agent.config.RequestConfig;
-import org.apache.nifi.agent.dto.ProcessGroupUploadRequestDTO;
+import org.apache.nifi.agent.dto.PGUploadRequestDTO;
 import org.apache.nifi.agent.exception.NiFiClientException;
+import org.apache.nifi.registry.flow.VersionedFlowSnapshot;
 import org.apache.nifi.web.api.entity.ProcessGroupEntity;
 import org.apache.nifi.web.api.entity.ProcessGroupsEntity;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -13,13 +14,10 @@ import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
-import java.util.Set;
 
 public class JerseyProcessGroupClient extends AbstractJerseyClient implements ProcessGroupClient {
     private final WebTarget processGroupsTarget;
@@ -39,7 +37,7 @@ public class JerseyProcessGroupClient extends AbstractJerseyClient implements Pr
     }
 
     @Override
-    public ProcessGroupEntity uploadProcessGroup(String parentGroupId, ProcessGroupUploadRequestDTO req)
+    public ProcessGroupEntity uploadProcessGroup(String parentGroupId, PGUploadRequestDTO req)
             throws NiFiClientException, IOException {
         String decodedFlowContent = new String(Base64.getDecoder().decode(req.getFlowContent()));
         File file = File.createTempFile("flow", ".json");
@@ -95,5 +93,36 @@ public class JerseyProcessGroupClient extends AbstractJerseyClient implements Pr
     @Override
     public ProcessGroupEntity updateProcessGroup(ProcessGroupEntity entity) throws NiFiClientException, IOException {
         return null;
+    }
+
+    @Override
+    public ProcessGroupEntity deleteProcessGroup(String processGroupId, int version) throws NiFiClientException, IOException {
+        if (StringUtils.isBlank(processGroupId)) {
+            throw new IllegalArgumentException("Process group id cannot be null or blank");
+        }
+
+        return executeAction("Error deleting process group", () -> {
+            final WebTarget target = processGroupsTarget
+                    .path("{id}")
+                    .queryParam("version", version)
+                    .resolveTemplate("id", processGroupId);
+
+            return getRequestBuilder(target).delete(ProcessGroupEntity.class);
+        });
+    }
+
+    @Override
+    public VersionedFlowSnapshot downloadVersionedFlowSnapshot(String processGroupId) throws NiFiClientException, IOException {
+        if (StringUtils.isBlank(processGroupId)) {
+            throw new IllegalArgumentException("Process group id cannot be null or blank");
+        }
+
+        return executeAction("Error download process group", () -> {
+            final WebTarget target = processGroupsTarget
+                    .path("{id}/download")
+                    .resolveTemplate("id", processGroupId);
+
+            return getRequestBuilder(target).get(VersionedFlowSnapshot.class);
+        });
     }
 }

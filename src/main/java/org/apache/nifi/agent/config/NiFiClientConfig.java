@@ -7,10 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import javax.net.ssl.HostnameVerifier;
@@ -21,13 +19,12 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import org.apache.nifi.registry.security.util.KeyStoreUtils;
 import org.apache.nifi.registry.security.util.KeystoreType;
-import org.apache.nifi.security.util.TlsConfiguration;
 
 @Getter
 @Setter
 @Component
 @ConfigurationProperties(prefix = "nifi.client")
-public class NifiClientConfig {
+public class NiFiClientConfig {
     public static final String DEFAULT_PROTOCOL = TlsConfiguration.getHighestCurrentSupportedTlsProtocolVersion();
 
     private String baseUrl;

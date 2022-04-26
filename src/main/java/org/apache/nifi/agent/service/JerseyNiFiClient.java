@@ -1,16 +1,13 @@
 package org.apache.nifi.agent.service;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.nifi.agent.config.NifiClientConfig;
+import org.apache.nifi.agent.config.NiFiClientConfig;
 import org.apache.nifi.agent.config.ProxiedEntityRequestConfig;
-import org.apache.nifi.agent.config.RequestConfig;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -18,7 +15,6 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -33,10 +29,10 @@ public class JerseyNiFiClient implements NiFiClient {
 
     private final Client client;
     private final WebTarget baseTarget;
-    private final NifiClientConfig nifiClientConfig;
+    private final NiFiClientConfig nifiClientConfig;
 
     @Autowired
-    private JerseyNiFiClient(final NifiClientConfig conf) {
+    private JerseyNiFiClient(final NiFiClientConfig conf) {
         String baseUrl = conf.getBaseUrl();
         if (StringUtils.isBlank(baseUrl)) {
             throw new IllegalArgumentException("Base URL cannot be blank");
@@ -97,6 +93,14 @@ public class JerseyNiFiClient implements NiFiClient {
             return new JerseyControllerServicesClient(baseTarget, new ProxiedEntityRequestConfig(nifiClientConfig.getProxiedEntity()));
         }
         return new JerseyControllerServicesClient(baseTarget);
+    }
+
+    @Override
+    public ParamContextClient getParamContextClient() {
+        if (nifiClientConfig.getProxiedEntity() != null) {
+            return new JerseyParamContextClient(baseTarget, new ProxiedEntityRequestConfig(nifiClientConfig.getProxiedEntity()));
+        }
+        return new JerseyParamContextClient(baseTarget);
     }
 
     @Override
